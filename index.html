@@ -1,281 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
 
-    <!-- External stylesheets -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Final Project</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.4.2/vega-tooltip.css" rel="stylesheet">
+</head>
 
-    <!-- Custom styling -->
-    <style>
-    #chart-area svg {
-      margin:auto;
-      display:inherit;
-    }
-
-    .money-cell { text-align: right; }
-    h2 { text-align: center; }
-
-    #leg1 { background-color: #66c2a5; }
-    #leg2 { background-color: #fc8d62; }
-    #leg3 { background-color: #8da0cb; }
-    #leg4 { background-color: #e78ac3; }
-    #leg5 { background-color: #a6d854; }
-    #avLeg { background-color: grey; }
-
-    @media screen and (min-width: 768px) {
-      table { margin-top: 100px; }
-    }
-
-    @media screen and (min-width: 768px) {
-      table { margin-top: 100px; }
-    }
-
-    #page-main { margin-top: 10px; }
-
-    #controls { margin-bottom: 20px; }
-
-    #play-button {
-      margin-top: 10px;
-      width: 100px;
-    }
-
-    #slider-div {
-      width:300px;
-      float:right;
-    }
-    </style>
-  </head>
-  <body>
-    <h2>Year: <span id="year"></span></h2>
-
-    <div class="container" id="page-main">
-      <div id="controls" class="row">
-        <div class="col-md-12">
-          <button id="play-button" class="btn btn-primary">Play</button>
-          <div id="slider-div">
-            <label>Year: <span id="year-label"></span></label>
-            <div id="date-slider"></div>
-          </div>
-        </div>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+          aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        <a class="navbar-brand" href="index.html">CS416 - Final Project</a>
       </div>
-
-      <div class="row">
-        <div class="col-md-7">
-          <div id="chart-area"></div>
-        </div>
-
-        <div class="col-md-5">
-          <table class="table">
-            <tbody>
-              <tr>
-                <th></th>
-                <th>Income Bracket</th>
-                <th>Household Income (2015 dollars)</th>
-              </tr>
-              <tr>
-                <td id="leg5"></td>
-                <td>Highest 20%</td>
-                <td class="money-cell"><span id="fig5"></span></td>
-              </tr>
-              <tr>
-                <td id="leg4"></td>
-                <td>Second-Highest 20%</td>
-                <td class="money-cell"><span id="fig4"></span></td>
-              </tr>
-              <tr>
-                <td id="leg3"></td>
-                <td>Middle 20%</td>
-                <td class="money-cell"><span id="fig3"></span></td>
-              </tr>
-              <tr>
-                <td id="leg2"></td>
-                <td>Second-Lowest 20%</td>
-                <td class="money-cell"><span id="fig2"></span></td>
-              </tr>
-              <tr>
-                <td id="leg1"></td>
-                <td>Lowest 20%</td>
-                <td class="money-cell"><span id="fig1"></span></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td id="avLeg"></td>
-                <th>Average</th>
-                <th class="money-cell"><span id="avFig"></span></th>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="index.html">Overview</a></li>
+          <li><a href="sheet1.html">Which State Has The Worst Drivers?</a></li>
+          <li><a href="sheet2.html">Bad Driving Behaviors</a></li>
+          <li><a href="sheet3.html">How Much Does Bad Driving Cost?</a></li>
+          <li><a href="sheet4.html">About</a></li>
+        </ul>
       </div>
     </div>
+  </nav>
 
-    <!-- External JS libraries -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+  <div id="vis-tooltip" class="vg-tooltip"></div>
 
-    <!-- Our JS code -->
-    <script>
-      const width = 540;
-      const height = 540;
-      const radius = Math.min(width, height) / 2;
+  <div class="container">
+    <br>
+    <br>
+    <div class="page-header">
+      <h1>Worst Drivers by States</h1>
+    </div>
+    <p class="lead">
+      Which state has the worst drivers? The answer is much more complicated than you thought. The number of car crashes, even fatal ones, isn’t a clear-cut way to understand who is and who isn’t a bad driver. A state with more fatal car crashes is not necessarily a state with more bad drivers — it could simply be a state that has more drivers or a state with worse driving conditions. So we need to factor in the total miles traveled in each state and focus on the characteristics of the drivers who were involved in fatal collisions. 
+    </p>
+    <p class="lead">
+      In this narrative visualization, we will try to find out "which state has the worst drivers" using multiple measures which could be indicators of bad driving: number of car crashes in each state, and out of these, the car crashes associated with bad driving behaviors: speeding, alcohol impairment, distractions, and involvement in previous accidents, how much insurance companies pay out, and how much insurance companies charge drivers. We will use data from the year 2012 for this exercise.  The conclusion could differ with data for a different year.
+    </p>
+    <br>
+  </div>
 
-      const svg = d3.select("#chart-area")
-        .append("svg")
-          .attr("width", width)
-          .attr("height", height)
-        .append("g")
-          .attr("transform", `translate(${width / 2}, ${height / 2})`);
+  <ul class="pager">
+    <li><a href="sheet1.html">Next</a></li>
+  </ul>
 
-      const color = d3.scaleOrdinal(["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854","#ffd92f"]);
+  <footer class="footer">
+    <div class="container">
+      <strong> <a href="https://github.com/suklinchan/suklinchan.github.io">Suk-Lin Chan</a></strong>
+    </div>
+  </footer>
 
-      const pie = d3.pie()
-        .value(1)
-        .sort(null);
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.0-rc2/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.0-beta.10/vega-lite.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.19/vega-embed.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.4.2/vega-tooltip.min.js"></script>
+</body>
 
-      const arc = d3.arc()
-        .innerRadius(0);
-
-      function prepareData(d){
-        console.log(d)
-        return {
-          name: d.year,
-          average: parseInt(d.average),
-          values: [
-            {
-              name: "first",
-              value: parseInt(d["1"])
-            },
-            {
-              name: "second",
-              value: parseInt(d["2"])
-            },
-            {
-              name: "third",
-              value: parseInt(d["3"])
-            },
-            {
-              name: "fourth",
-              value: parseInt(d["4"])
-            },
-            {
-              name: "fifth",
-              value: parseInt(d["5"])
-            }
-          ]
-        }
-      }
-
-      function arcTween(a) {
-        const i = d3.interpolate(this._current, a);
-        this._current = i(1);
-        return t => arc(i(t));
-      }
-
-      d3.csv("data/incomes.csv", prepareData).then(data => {
-        data = data.reverse();
-
-        const radiusScale = d3.scaleSqrt()
-          .domain([0, data[49].values[4].value])
-          .range([0, Math.min(width, height) / 2]);
-
-        function update(data) {
-          updateHTML(data);
-
-          arc.outerRadius(d => radiusScale(d.data.value));
-
-          // JOIN
-          const path = svg.selectAll("path")
-            .data(pie(data.values));
-
-          // UPDATE
-          path.transition().duration(200).attrTween("d", arcTween);
-
-          // ENTER
-          path.enter().append("path")
-            .attr("fill", (d, i) => color(i))
-            .attr("d", arc)
-            .attr("stroke", "white")
-            .attr("stroke-width", "2px")
-            .each(function(d) { this._current = d; });
-
-          svg.select(".averageLine").transition().duration(200)
-            .attr("r", radiusScale(data.average));
-        }
-
-        let time = 0;
-        let interval;
-
-        function step() {
-          update(data[time]);
-          time = (time == 49) ? 0 : time + 1;
-        }
-
-        $("#play-button").on("click", function() {
-          const button = $(this);
-          if (button.text() === "Play"){
-            button.text("Pause");
-            interval = setInterval(step, 200);
-          } else {
-            button.text("Play");
-            clearInterval(interval);
-          }
-        });
-
-        $("#date-slider").slider({
-          max: 49,
-          min: 0,
-          step: 1,
-          slide: (event, ui) => {
-            time = ui.value;
-            update(data[time]);
-          }
-        });
-
-        update(data[0]);
-
-        data[0].values.forEach((d, i) => {
-          svg.append("circle")
-            .attr("fill", "none")
-            .attr("cx", 0)
-            .attr("cy", 0)
-            .attr("r", radiusScale(d.value))
-            .attr("stroke", color(i))
-            .attr("stroke-dasharray", "4,4");
-        });
-
-        svg.append("circle")
-          .attr("class", "averageLine")
-          .attr("fill", "none")
-          .attr("cx", 0)
-          .attr("cy", 0)
-          .attr("stroke", "grey")
-          .attr("stroke-width", "2px");
-
-          // Update slider position
-          $("#date-slider").slider("value", time);
-      });
-
-      function updateHTML(data) {
-        // Update title
-        $("#year").text(data.name);
-
-        // Update slider label
-        $("#year-label").text(data.name);
-
-        // Update table values
-        $("#fig1").html(data.values[0].value.toLocaleString());
-        $("#fig2").html(data.values[1].value.toLocaleString());
-        $("#fig3").html(data.values[2].value.toLocaleString());
-        $("#fig4").html(data.values[3].value.toLocaleString());
-        $("#fig5").html(data.values[4].value.toLocaleString());
-        $("#avFig").html(data.average.toLocaleString());
-      }
-    </script>
-  </body>
 </html>
