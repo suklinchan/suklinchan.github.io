@@ -5,99 +5,131 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Final Project</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.4.2/vega-tooltip.css" rel="stylesheet">
+  <title>CS416 Narrative Visualization</title>
+
   <style>
     #sheet3Vis {
       overflow-x: auto;
       white-space: nowrap;
     }
   </style>
+
+  <!-- Styles for pagination  -->
+  <style>
+    /* header styling */
+    h1 {
+      font-family: sans-serif;
+      color: darkblue;
+    }
+
+    text {
+      font-family: sans-serif;
+      font-size: 11pt;
+    }
+
+    body {
+      font-family: sans-serif;
+    }
+
+    /* pagination position styling */
+    .pagination_section {
+      text-align:center; 
+      padding:0; 
+      position:relative; 
+      margin:20px 20px;
+    }
+
+/*    .pagination_section {
+      position: absolute;
+      top: 730px;
+      right: 665px;
+    }*/
+
+    /* pagination styling */ 
+    .pagination_section a {
+      color: black;
+      padding: 10px 18px;
+      text-decoration: none;
+    }
+
+    /* pagination hover effect on non-active */
+    .pagination_section a:hover:not(.active) {
+      background-color: #031F3B;
+      color: white;
+    }
+    /* pagination hover effect on active*/
+    
+    a:nth-child(6) {
+      background-color: lightskyblue;
+      color: white;
+    }
+    
+    a:nth-child(1) {
+      font-weight: bold;
+    }
+    
+    a:nth-child(7) {
+      font-weight: bold;
+    }
+    
+    .content {
+      margin: 50px;
+      padding: 15px;
+      width: 700px;
+      height: 200px;
+      border: 2px solid black;
+    }
+  </style>
 </head>
 
 <body data-spy="scroll" data-target=".scrollspy">
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-          aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        <a class="navbar-brand" href="index.html">CS416 - Final Project</a>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html">Overview</a></li>
-          <li><a href="sheet1.html">Which State Has The Worst Drivers?</a></li>
-          <li><a href="sheet2.html">Bad Driving Behaviors</a></li>
-          <li><a href="sheet3.html">How Much Does Bad Driving Cost?</a></li>
-          <li class="active"><a href="sheet4.html">About</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div id="vis-tooltip" class="vg-tooltip"></div>
 
   <div class="container">
-    <br>
-    <br>
     <div class="page-header">
-      <h1>About this Visualization</h1>
+      <h1>About this Narrative Visualization</h1>
     </div>
-    <p class="lead">This visualization project was created by D3.js as the final project for CS 498 Data Visualization, UIUC</p>
-    <h3>Hybrid Structure</h3>
-    <p class="lead">The visualization uses the interactive slideshow structure. At the top of the page, you can navigate through the project by clicking
-      the next page buttons. Reader can select different views to look at data graph presented in each page.</p>
+    <p class="lead">This visualization was created using the D3 library.</p>
+    <h3>Visualization Structure</h3>
+    <p class="lead">The visualization is designed as an interactive slideshow. Viewer can use the pagination control at the bottom of each slide to click through the pages as directed. On some of the slides, viewer can drill down into more details.  Viewer can choose to skip and continue to the next slide any time.</p>
     <h3>Scenes</h3>
-    <p class="lead">The narrative visualization is an interactive slide show with three scenes.  The first scene is a bar plot which provides the number of drivers involved in fatal collisions by state.  The second scene is a scatterplot of the number of drivers involved in fatal collisions vs. collisions due to any of 4 negligent driving behaviors observed for each state. The last scene is a scatterplot of the car insurance premium vs. collisions due to any of 4 negligent driving behaviors observed for each state. </p>
-    <h3>User Interface Events</h3>
-    <p class="lead">Mouse hoovering - a point on scatter plot and bars in the barchart will display the countryʻs name and the tooltips of
-      the chart. </p>
-    <p class="lead">Mouse Clicking - navigates through the project pages and hyperlinks to data sources.</p>
+    <p class="lead">There are 3 scenes in the visualization, book marked by an overview at the beginning and this page:</p>
+    <ul>
+      <li>First scene - a bar chart which provides the number of drivers involved in fatal collisions by state.</li>
+      <li>Second scene - a scatterplot of the collisions due to any of 4 negligent driving behaviors vs. the total number of fatal collisions observed for each state.</li> 
+      <li>Third scene - a scatterplot of the auto insurance premium vs. collisions due to any of 4 negligent driving behaviors observed for each state.</li>
+    </ul>
+ 
     <h3>Annotations</h3>
-    <p class="lead">Tooltips are used as annotation in both scatter plot and bar charts.When user's mouse move to selected bar, the points
-      or bar along the X and Y axis in the charts provides additional annotations for the chart.</p>
-    <h3>Parameters</h3>
-    <p class="lead">Between bar chart 1 and bar chart 2 caontain two different parameters, we can switch between scenes to see the difference
-      of </p>
-    <h3>Triggers</h3>
-    <p class="lead">Tooltips - Hovering the mouse on a bar shows the number of crashes and the number of crashes due to a specific type of driving behavior. </p>
-    <p class="lead">Tabs and hyperlinks - The tab and hyperlinks in the pages allow readers to navigates through the project and check the
-      data source.</p>
-    <h3>Data Source</h3>
-    <p class="lead">The data refers to percentage of drivers with negligent behaviors out of the total. I converted the numbers to the absolute values instead.</p>
-    <h4>
-      <a href="https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/" target="_blank">Dear Mona, Which State Has The Worst Drivers?</a>
-    </h4>
-    <h4>
-      <a href="https://github.com/fivethirtyeight/data/blob/master/bad-drivers/bad-drivers.csv" target="_blank">Bad Drivers Data</a>
-    </h4>
-  
-    <br>
+    <p class="lead">For all the scenes with charts, tooltips are provided to show details on demand.</p>
+    <h3>Parameters and Triggers</h3>
+    <p class="lead">Throughout the visualization, various triggers connect viewer actions to changes of state in the narrative visualization:</p>
+    <ul>
+      <li>Viewer clicks the next slide number, and triggers a change in the scene/slide parameter.</li>
+      <li>Viewer moves between scenes and triggers a display of an entirely different chart (chart parameter changes state).</li>
+      <li>Viewer moves between slide 3 and slide 4, and triggers a change in the x,y co-ordinates parameters to their respective groupings on the scatterplots.</li>
+      <li>Viewer selects an option in the dropdown menu and triggers a change in the values to be plotted on the chart.</li>
+      <li>Viewer hovers over a bar on the bar chart, or a datapoint on the scatterplot, and triggers the tooltip to change state from hidden to visible.</li>      
+    </ul>
 
+    <h3>Data Source</h3>
+    <p class="lead">This narrative is inspired by the story <a href="https://fivethirtyeight.com/features/which-state-has-the-worst-drivers/" target="_blank">Dear Mona, Which State has the Worst Drivers?</a>. The corresponding data (reverse constructed from the charts) is from <a href="https://github.com/fivethirtyeight/data/blob/master/bad-drivers/bad-drivers.csv" target="_blank">Bad Drivers Data</a>. The source data captures the percentage of drivers with negligent behaviors out of the total. I converted the numbers to the absolute values instead.</p>.  Also referenced is 
+  
   </div>
 
-  <ul class="pager">
-    <li><a href="sheet3.html">Previous</a></li>
-  </ul>
+  <!-- pagination elements -->
+  <center>
+  <div class="pagination_section">
+    <a href="sheet3.html"><< Previous</a>
+    <a href="index.html" title="Overview">1</a>
+    <a href="sheet1.html" title="Crashes by States">2</a>
+    <a href="sheet2.html" title="Driving Behaviors">3</a>
+    <a href="sheet3.html" title="Insurance Premium">4</a>
+    <a class="active"  href="sheet4.html" title="Design" >5</a>
+    <a href="#">Next >></a>
+  </div>
+  </center>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-    crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.0-beta.38/vega.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.0-beta.6/vega-lite.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.19/vega-embed.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.4.2/vega-tooltip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.14/vega-embed.min.js"></script>
 </body>
 
 </html>

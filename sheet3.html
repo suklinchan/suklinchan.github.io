@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Final Project</title>
+  <title>CS416 Narrative Visualization</title>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
   <!-- Styles for our vis  -->
   <style>
@@ -32,10 +33,6 @@
         background-color: white;
     }
   </style>
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.4.2/vega-tooltip.css" rel="stylesheet">
   
   <style>
     #sheet3Vis {
@@ -43,46 +40,81 @@
       white-space: nowrap;
     }
   </style>
+
+  <!-- Styles for pagination  -->
+  <style>
+
+    /* header styling */
+    h1 {
+      font-family: sans-serif;
+      color: darkblue;
+    }
+
+    /* pagination position styling */
+    .pagination_section {
+      text-align:center; 
+      padding:0; 
+      position:relative; 
+      margin:20px 20px;
+    }
+
+/*    .pagination_section {
+      position: absolute;
+      top: 830px;
+      right: 665px;
+    }*/
+
+    /* pagination styling */ 
+    .pagination_section a {
+      color: black;
+      padding: 10px 18px;
+      text-decoration: none;
+    }
+
+    /* pagination hover effect on non-active */
+    .pagination_section a:hover:not(.active) {
+      background-color: #031F3B;
+      color: white;
+    }
+    /* pagination hover effect on active*/
+    
+    a:nth-child(5) {
+      background-color: lightskyblue;
+      color: white;
+    }
+    
+    a:nth-child(1) {
+      font-weight: bold;
+    }
+    
+    a:nth-child(7) {
+      font-weight: bold;
+    }
+    
+    .content {
+      margin: 50px;
+      padding: 15px;
+      width: 700px;
+      height: 200px;
+      border: 2px solid black;
+    }
+  </style>
 </head>
 
 <body data-spy="scroll" data-target=".scrollspy">
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-          aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        <a class="navbar-brand" href="index.html">CS416 - Final Project</a>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html">Overview</a></li>
-          <li><a href="sheet1.html">Which State Has The Worst Drivers?</a></li>
-          <li><a href="sheet2.html">Bad Driving Behaviors</a></li>
-          <li class="active"><a href="sheet3.html">How Much Does Bad Driving Cost?</a></li>
-          <li><a href="sheet4.html">About</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div id="vis-tooltip" class="vg-tooltip"></div>
 
   <div class="container">
-    <br>
-    <br>
     <div class="page-header">
-      <h1>How Much Does Bad Driving Cost?</h1>
+      <h1>How Much does Bad Driving Cost?</h1>
     </div>
     <p class="lead">
-      Average premiums in each state could reflect insurance companies’ overall assessment of who is likely to cost them in the future. According to the figures from the National Association of Insurance Commissioners (NAIC) in 2012, high-risk drivers are to be found in New Jersey, where at $1,302, car insurance is the most expensive in the country. On that same logic, Idahoans, whose car insurance is on average less than half that, are the best drivers in the country. But how much do irresponsible driving behaviors per se influence the cost of insurance?
+      Average premiums in each state could reflect insurance companies’ overall assessment of who is likely to cost them in the future. According to the figures from the National Association of Insurance Commissioners (NAIC) in 2012, high-risk drivers are to be found in New Jersey, where at $1,302, car insurance is the most expensive in the country. By the same logic, Idaho drivers, whose car insurance is on average less than half that, would be considered the best drivers in the country. But does the data corroborate with this logic?
     </p>
     <p class="lead">
-      Use the dropdown menu to select any of the driving behaviors as well as the total number of crashes, and see how they relate to the insurance premium across the country. You might not be able to find a direct correlation in all cases. In reality, there are many other factors which come into play. For example, the model of the car, how much the drivers drive, and other demographic considerations such as where the drivers reside, age and driving experience.  It is interesting to see that inspite of a low overall number of crashes and relatively well behaved driving population, the premium at $1,274 is super high, just second to the highest at New Jersey.  South Carolina, with a relatively high number of crashes and bad drivers, is not particularly penalized with a high premium.  Check it out yourself!
+      Use the dropdown menu to select any of the driving behaviors as well as the total number of crashes, and see how they relate to the insurance premium across the country. Can you find a direct correlation in any of these cases? It is interesting to see that inspite of a low overall number of crashes and relatively well behaved driving population, the premium at $1,274 is super high at District of Columbia, just second to the highest at New Jersey. Can you find the state(s) which have high number of crashes and bad drivers, but are not penalized with a high premium? What conculsion, if any, can you infer from the data?
+    </p>
+    <p class="lead">
+      In reality, there are many other factors which come into play. For example, the model of the car, how much the drivers drive, and other demographic considerations such as where the drivers reside, age and driving experience.  
     </p>
     <br>
 
@@ -95,25 +127,19 @@
   <!-- Create a div where the graph will take place -->
   <div id="vis-container"></div>
 
+  <!-- pagination elements -->
+  <div class="pagination_section">
+    <a href="sheet2.html"><< Previous</a>
+    <a href="index.html" title="Overview">1</a>
+    <a href="sheet1.html" title="Crashes by States">2</a>
+    <a href="sheet2.html" title="Driving Behaviors">3</a>
+    <a class="active" href="sheet3.html" title="Insurance Premium">4</a>
+    <a href="sheet4.html" title="Design" >5</a>
+    <a href="sheet4.html">Next >></a>
+  </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-    crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.0-beta.38/vega.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-lite/2.0.0-beta.6/vega-lite.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.19/vega-embed.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-tooltip/0.4.2/vega-tooltip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.14/vega-embed.min.js"></script>
-
   <script src="lib/crashes_and_insurance.js"></script>
-
-  <ul class="pager">
-    <li><a href="sheet2.html">Previous</a></li>
-    <li><a href="sheet4.html">Next</a></li>
-  </ul>
 
 </body>
 
